@@ -1,0 +1,2 @@
+# pySsammwuLib
+python library
