@@ -12,7 +12,7 @@ class RigidBuilder():
             self.__dict__[param] = partial(self.__add_parameter, param)
 
     def __add_parameter(self, key, value):
-        assert isinstance(value, self.__type[key]), "Type Error"
+        assert isinstance(value, self.__type[key]), TypeError
         self.__parameters[key] = value
         return self
 
