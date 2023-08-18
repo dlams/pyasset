@@ -40,7 +40,11 @@ model3 = RigidBuilder(A).a("hello").b("world")
 
 ## Percentage Bar
 ### bar
+
 ```python
+# print bar in terminal.
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+
 from percentage.captions import PercentageValueCaption, PercentageTinyTimeSpanCaption
 from percentage.bar import BarPercentage
 from time import sleep
