@@ -1,48 +1,72 @@
 import unittest
-from builder import Builder, RigidBuilder
+from builder import builder
 
 
-class A:
+@builder()
+class MyClass:
     def __init__(self):
-        self.a = int()
-        self.b = float()
-        self.c = str()
+        self.integer = 32
+        self.string = "Undefined"
 
     def __str__(self):
-        return ", ".join(map(str, [self.a, self.b, self.c]))
+        return str(self.integer) + ", " + self.string
 
 
-class Car:
+@builder(
+    build_method_name="run",
+    setter_prefix="set_"
+)
+class SecondMyClass:
     def __init__(self):
-        self.name = "Undefined"
-        self.speed = 0
+        self.ready = bool(False)
+        self.initial_speed = float()
 
     def __str__(self):
-        return f"name : {self.name}, speed : {self.speed}"
+        return "speed : " + str(self.initial_speed) if self.ready else "not ready."
+
+
+@builder(type_check=True)
+class ThirdMyClass:
+    def __init__(self):
+        self.integer = int()
+        self.float = float()
+        self.string = str()
+        self.boolean = bool()
 
 
 class BuilderTestModel(unittest.TestCase):
+    def test_runs(self):
+        print("✨ Not use builder(). ✨")
+        print(MyClass())
+        print()
 
-    def test_builder_normal(self):
-        model = Builder(A).build()
-        self.assertEqual(model.a, int())
-        self.assertEqual(model.b, float())
-        self.assertEqual(model.c, str())
+        print("✨ Use default builder ✨")
+        obj = MyClass.builder().integer(64)
+        obj.string("define.")
+        print(obj.build())
+        print()
 
-    def test_builder(self):
-        value_a = 5
-        model = Builder(A).a(value_a).build()
-        self.assertEqual(model.a, value_a)
+        vehicle1 = SecondMyClass.builder()
+        vehicle1.set_ready(True)
+        vehicle1.set_initial_speed(0.5)
 
-    def test_rigid_builder(self):
-        name = "First Car"
-        model = RigidBuilder(Car).name(name)
-        self.assertEqual(model.build().name, name)
+        vehicle2 = SecondMyClass.builder().set_initial_speed(2023).run()
 
-    def test_make_error(self):
-        # make error
-        error_value = "speed is 5"
-        model = RigidBuilder(Car).speed(error_value)
+        print("""✨ Check builder's initial options. ✨
+    - build_method_name = "run",
+    - setter_prefix = "set_"
+                """)
+        print("   Vehicle 1 :", vehicle1.run())
+        print("   Vehicle 2 :", vehicle2)
+        print()
+
+    def test_z_make_error(self):
+        print("❌ Make Type Error <- type check ❌")
+        obj = ThirdMyClass.builder()
+        obj.integer(1)
+        print("   - type_check option prevent other type")
+        print("   - here. expect float, but input is str")
+        obj.float("MAKE ERROR")
 
 
 if __name__ == '__main__':

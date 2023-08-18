@@ -1,5 +1,3 @@
-from builder import builder
-from builder import rigid_builder
+from builder import builder_decorator
 
-Builder = builder.Builder
-RigidBuilder = rigid_builder.RigidBuilder
+builder = builder_decorator.builder

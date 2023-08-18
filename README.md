@@ -1,48 +1,129 @@
-# pySsammwuLib (임시 이름)
+# pySsammwuLib (Temporary Title)
 
 
+## 1. Builder 
+### Builder Decorator
 
-## 1. Builder
-### Builder
+> If you want to apply the `builder pattern` to your custom class, follow these steps:
+1. load code using `from builder import builder`
+2. Place the desired variables in the class constructor function (def __init__(self)).
+3. Attach the `@builder` decorator at the top of the class.
+4. Done.
 
 ```python
-from builder import Builder
+# For example
+from builder import builder
 
+@builder()
 class A:
     def __init__(self):
-        self.a = int()
-        self.b = float()
-        self.c = str()
-
-model1 = Builder(A).build()
-model2 = Builder(A).a(5).build()
-model3 = Builder(A).a("hello").b("world")
-result = model3.build()
+        self.name = str()
+        self.age = 0
 ```
 
-### RigidBuilder
+> If you've written the builder decorator but don't want to apply the builder pattern, simply avoid appending `.builder()`!  
+
+The instance will be created following the existing `__init__` function.
+
 ```python
-from builder import RigidBuilder
+a = A()   # you can use A.builder() 
 
-class A:
-    def __init__(self):
-        self.a = int()
-        self.b = float()
-        self.c = str()
-
-model1 = RigidBuilder(A).build()
-model2 = RigidBuilder(A).a(5).build()
-# Make error - Type Error
-    # Why? a is int, b is float.
-    # rigid builder checking variable type.
-model3 = RigidBuilder(A).a("hello").b("world")
+---
+a.name   # ""
+a.age   # 0
 ```
 
-## Percentage Bar
+```python
+from builder import builder
+
+# It also provides several options.
+
+# 1. use decorator only @builder()
+#  - non-check type
+#  - last method is .build()
+#  - default method use : ex) CLASS.builder().name("NAME")
+
+@builder()
+class MyClass:
+    def __init__(self):
+        self.integer = 32
+        self.string = "Undefined"
+
+    def __str__(self):
+        return str(self.integer) + ", " + self.string
+
+    
+obj = MyClass.builder().integer(64).build()
+    
+    
+# 2. use decorator @builder() with some options.
+#  - non-check type
+#  - last method is .run()
+#  - prefix method use : ex) CLASS.builder().set_name("NAME")
+    
+@builder(
+    build_method_name="run",
+    setter_prefix="set_"
+)
+class SecondMyClass:
+    def __init__(self):
+        self.ready = bool(False)
+        self.initial_speed = float()
+
+    def __str__(self):
+        return "speed : " + str(self.initial_speed) if self.ready else "not ready."
+
+
+
+vehicle1 = SecondMyClass.builder()
+vehicle1.set_ready(True)
+vehicle1.set_initial_speed(0.5)
+vehicle1.run()
+
+vehicle2 = SecondMyClass.builder().set_initial_speed(2023).run()
+
+
+# 3. use decorator @builder() with type_check.
+#  - check type, if not matched type? raise TypeError
+#  - Of course, it can be combined with other options
+
+@builder(type_check=True)
+class ThirdMyClass:
+    def __init__(self):
+        self.integer = int()
+        self.float = float()
+        self.string = str()
+        self.boolean = bool()
+
+        
+obj = ThirdMyClass.builder()
+obj.integer(1)
+# error
+obj.float("MAKE ERROR")
+```
+
+### Debugging mode for builder
+```python
+# you want target of builder class
+class BuilderPattern:
+    ...
+    
+    def __str__(self):
+        return f"{<CLASS>.__name__} builder"
+
+    def __repr__(self):
+        return f"{<CLASS>.__name__} builder, {<PARAMETERS>}"
+
+# you can use str(<BUILDER_CLASS>) return <TARGET> builder.
+# and use repr(<BUILDER_CLASS>) retrun <TARGER> builder, and <KEY: VALUE> maps.
+```
+
+
+## Percentage Bar (Under Improvement)
 ### bar
 
 ```python
-# print bar in terminal.
+# print colored bar in terminal.
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
 
 from percentage.captions import PercentageValueCaption, PercentageTinyTimeSpanCaption
