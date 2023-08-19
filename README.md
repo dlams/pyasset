@@ -12,7 +12,7 @@
 
 ```python
 # For example
-from builder import builder
+from pyasset import builder
 
 @builder()
 class A:
@@ -34,7 +34,7 @@ a.age   # 0
 ```
 
 ```python
-from builder import builder
+from pyasset import builder
 
 # It also provides several options.
 
@@ -104,7 +104,7 @@ obj.float("MAKE ERROR")
 
 ### Debugging mode for builder
 ```python
-# you want target of builder class
+# if you want target of builder class
 class BuilderPattern:
     ...
     
@@ -119,7 +119,9 @@ class BuilderPattern:
 ```
 
 
-## Percentage Bar (Under Improvement)
+# CANT USE.
+## 2. Percentage Bar (Under Improvement)
+
 ### bar
 
 ```python
