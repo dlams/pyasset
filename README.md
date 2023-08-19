@@ -1,4 +1,17 @@
-# pySsammwuLib (Temporary Title)
+# PyAsset
+> python library supporting builder, and more (to be updated)
+
+
+### Quick Start
+```shell
+# version 1.0.1 is latest and support @builder()
+$ pip install pyasset
+
+$ python
+>>> from pyasset import builder
+...
+```
+
 
 
 ## 1. Builder 
@@ -104,7 +117,7 @@ obj.float("MAKE ERROR")
 
 ### Debugging mode for builder
 ```python
-# if you want target of builder class
+# if you want checking target of builder class
 class BuilderPattern:
     ...
     
